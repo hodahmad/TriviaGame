@@ -1,13 +1,11 @@
 .answerchoice {
-	border: 2px dotted purple;
-  border-radius: 5%;
-	width: 40%;
-	color: rgb(185, 42, 185);
+  border: 2px dotted purple;
   text-align: center;
   margin: 10px auto;
-  font-size: 20px;
+  width: 40%;
   background-color: white;
-
+	color: rgb(185, 42, 185);
+  font-size: 20px;
 }
 
 img {
@@ -21,13 +19,11 @@ img {
 }
 
 #questionblock {
-  text-align: center;
   font-weight: bold;
+  text-align: center;
+  color: purple;
 }
 
-#reset {
-  visibility: visible;
-}
 
 body {
   background-color: rgb(211, 160, 240);
@@ -35,35 +31,35 @@ body {
 
 h1 {
   text-align: center;
-  color:white;
-  font-weight: bolder;
-  padding: 20px;
+  padding: 30px;
+  font-weight: bold;
+  color:purple;
   font-size: 45px;
-  font-family: Helvetica;
+  font-family: Cambria;
 }
 
 p {
   margin: 10px;
-  font-weight: bold;
-  color: red;
+  color: darkred;
   font-size: 20px;
+  font-weight: bold;
 }
 
 h2, h4 {
-  margin: 30px;
   font-weight: bold;
+  margin: 30px;
 }
 
 .wrapper {
   margin: 10px auto;
+  width: 50%;
   background-color: white;
   border: 2px dashed purple;
-  height: 500px;
-  width: 60%;
+  height: 400px;
   text-align: center;
 }
 
 .btn {
-  position: relative;
-  bottom: -150px;
+  margin-top: 200px;
+  font-family: "Times New Roman";
 }

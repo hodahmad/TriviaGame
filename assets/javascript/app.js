@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    //create objects for the questions and answers, and their relative position in the array.
     var options = [
         {
             question: "What is the largest bone in the human body?", 
@@ -40,24 +41,29 @@ $(document).ready(function () {
             choice: ["2020", "2039", "2025", "2030"],
             answer: 0,
         }];
+
+    //create variables for the correct answers, wrong answers, and how many were unanswered
+            var correctCount = 0;
+            var wrongCount = 0;
+            var unansweredCount = 0;
+            var userGuess ="";
+
+    //create variables for the timer and interval
+            var timer = 30;
+            var intervalId;
+
+    // create a variable for the answer choices array so that it can be used to derive whether the answer is right or wrong
+            var running = false;
+            var qCount = options.length;
+            var pick;
+            var index;
+            var newArray = [];
+            var holder = [];
     
-    var correctCount = 0;
-    var wrongCount = 0;
-    var unanswerCount = 0;
-    var timer = 30;
-    var intervalId;
-    var userGuess ="";
-    var running = false;
-    var qCount = options.length;
-    var pick;
-    var index;
-    var newArray = [];
-    var holder = [];
-    
-    
+    //create the function to start the game and timer by clicking "Start!" button. On reset, it should begin again.
     
     $("#reset").hide();
-    //click start button to start game
+
     $("#start").on("click", function () {
             $("#start").hide();
             displayQuestion();
@@ -66,64 +72,55 @@ $(document).ready(function () {
         holder.push(options[i]);
     }
         })
-    //timer start
+    //function to start the timer and begin to count downwards when the timer begins 
     function runTimer(){
         if (!running) {
         intervalId = setInterval(decrement, 1000); 
         running = true;
         }
     }
-    //timer countdown
+    //timer countdown function
     function decrement() {
         $("#timeleft").html("<h3>Time remaining: " + timer + "</h3>");
         timer --;
     
-        //stop timer if reach 0
+     //the timer should stop after it hits zero, and the unanswered questions should go up 
         if (timer === 0) {
-            unanswerCount++;
+            unansweredCount++;
             stop();
             $("#answerblock").html("<p>Time's up! The correct answer is: " + pick.choice[pick.answer] + "</p>");
             hidepicture();
         }	
     }
     
-    //timer stop
+    //timer stop and should reset 
     function stop() {
         running = false;
         clearInterval(intervalId);
     }
-    //randomly pick question in array if not already shown
-    //display question and loop though and display possible answers
+    // create a loop to loop through the choices when the question is displayed 
     function displayQuestion() {
-        //generate random index in array
         index = Math.floor(Math.random()*options.length);
         pick = options[index];
     
-    //	if (pick.shown) {
-    //		//recursive to continue to generate new index until one is chosen that has not shown in this game yet
-    //		displayQuestion();
-    //	} else {
-    //		console.log(pick.question);
-            //iterate through answer array and display
-            $("#questionblock").html("<h2>" + pick.question + "</h2>");
+    //	go through answer array and display "pick.choice.length" and append answer choices 
+
+      $("#questionblock").html("<h2>" + pick.question + "</h2>");
             for(var i = 0; i < pick.choice.length; i++) {
                 var userChoice = $("<div>");
                 userChoice.addClass("answerchoice");
                 userChoice.html(pick.choice[i]);
-                //assign array position to it so can check answer
                 userChoice.attr("data-guessvalue", i);
                 $("#answerblock").append(userChoice);
-    //		}
     }
     
-    
-    
-    //click function to select answer and outcomes
+    //"on click" when user selects the answer 
     $(".answerchoice").on("click", function () {
-        //grab array position from userGuess
+        //use parseInt to obtain user's guess from the array
         userGuess = parseInt($(this).attr("data-guessvalue"));
     
-        //correct guess or wrong guess outcomes
+        //use if else to increase the correct or incorrect count based on if the user answered correctly or not
+        //to ensure that the user cannot select more than one answer, have incorrect or correct appear right away
         if (userGuess === pick.answer) {
             stop();
             correctCount++;
@@ -141,27 +138,26 @@ $(document).ready(function () {
     })
     }
     
-    
     function hidepicture () {
         $("#answerblock").append("<img src=" + pick.photo + ">");
         newArray.push(pick);
-        options.splice(index,1);
+        options.splice(index,1); 
     
         var hidpic = setTimeout(function() {
             $("#answerblock").empty();
             timer= 30;
     
-        //run the score screen if all questions answered
-        if ((wrongCount + correctCount + unanswerCount) === qCount) {
+        //at the end of the trivia quiz, show the screen that displays the score 
+        if ((wrongCount + correctCount + unansweredCount) === qCount) {
             $("#questionblock").empty();
             $("#questionblock").html("<h3>Game Over!  Here's how you did: </h3>");
             $("#answerblock").append("<h4> Correct: " + correctCount + "</h4>" );
             $("#answerblock").append("<h4> Incorrect: " + wrongCount + "</h4>" );
-            $("#answerblock").append("<h4> Unanswered: " + unanswerCount + "</h4>" );
+            $("#answerblock").append("<h4> Unanswered: " + unansweredCount + "</h4>" );
             $("#reset").show();
             correctCount = 0;
             wrongCount = 0;
-            unanswerCount = 0;
+            unansweredCount = 0;
     
         } else {
             runTimer();
